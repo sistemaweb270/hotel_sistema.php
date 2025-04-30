@@ -1,0 +1,48 @@
+# Nombre del workflow
+name: PHP CI (Sin Composer)
+
+# Define cuándo se ejecutará este workflow
+on:
+  push:
+    branches:
+      - main # Se ejecuta en cada push a la rama 'main'
+      # Si tu rama principal se llama 'master', cámbialo aquí a 'master'
+  pull_request:
+    branches:
+      - main # También se ejecuta en cada pull request a la rama 'main'
+      # Si tu rama principal se llama 'master', cámbialo aquí a 'master'
+
+# Define los trabajos (jobs) que se ejecutarán
+jobs:
+  build:
+    # Define el entorno donde se ejecutará el trabajo
+    runs-on: ubuntu-latest # Usa la última versión de Ubuntu
+
+    # Define los pasos (steps) que componen el trabajo
+    steps:
+    - name: Checkout code # Paso para descargar tu código del repositorio
+      uses: actions/checkout@v4 # Usa la acción oficial de GitHub para checkout
+
+    - name: Set up PHP # Paso para configurar el entorno PHP
+      uses: shivammathur/setup-php@v2 # Usa una acción popular para configurar PHP
+      with:
+        # Especifica la versión de PHP que necesitas.
+        # Puedes cambiar '8.x' por una versión específica como '7.4', '8.1', '8.2', '8.3', etc.
+        php-version: '8.x'
+        # NOTA: No incluimos 'composer: true' aquí porque no usas Composer.
+
+    - name: Display PHP version # Paso opcional para mostrar la versión de PHP (útil para verificar)
+      run: php -v
+
+    # --- Aquí terminan los pasos básicos para un proyecto sin Composer ---
+    # Si tuvieras tests unitarios o algún otro script de verificación simple en PHP
+    # que no dependa de Composer, podrías añadirlos aquí usando el comando 'run:'.
+
+    # Ejemplo (descomenta si lo necesitas):
+    # - name: Run a simple PHP script
+    #   run: php path/to/your/script.php
+
+    # Nota importante: Este workflow NO sube tus archivos a tu hosting gratuito
+    # (como InfinityFree). La subida a hosting se hace por separado (manualmente por FTP/File Manager)
+    # o configurando un paso de despliegue específico si tu hosting lo permite,
+    # lo cual es más avanzado y no está incluido en este workflow básico sin Composer.
